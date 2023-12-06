@@ -2,13 +2,14 @@
 #include <Keyboard.h>
 
 #define LED_PIN     PC13
-#define KEY0_PIN    PB11
-#define KEY1_PIN    PB10
-#define KEY2_PIN    PB1
-#define KEY3_PIN    PB0
-#define KEY4_PIN    A7
-#define KEY5_PIN    A6
-#define KEY6_PIN    A5
+
+#define KEY0_PIN    PA3
+#define KEY1_PIN    PA2
+#define KEY2_PIN    PA1
+#define KEY3_PIN    PA0
+#define KEY4_PIN    PC15
+#define KEY5_PIN    PC14
+#define KEY6_PIN    PC13
 
 void setup()
 {
