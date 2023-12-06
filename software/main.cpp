@@ -1,3 +1,13 @@
+/**
+ * @file        main.cpp
+ * @brief       Entry point and main program
+ * @author      Copyright (C) Peter Ivanov, 2023
+ *
+ * Created      2023-11-30 11:30:53
+ * Last modify: 2023-12-06 19:03:55 ivanovp {Time-stamp}
+ * Licence:     GPL
+ */
+
 #include <Arduino.h>
 #include <Keyboard.h>
 
