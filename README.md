@@ -11,3 +11,18 @@ Photos:
 ![Macro keyboard top](https://github.com/ivanovp/blue_pill_arduino_usb_hid_keyboard/blob/main/blue_pill_arduino_usb_hid_keyboard_top.jpg?raw=true)
 ![Macro keyboard](https://github.com/ivanovp/blue_pill_arduino_usb_hid_keyboard/blob/main/blue_pill_arduino_usb_hid_keyboard.jpg?raw=true)
 
+Bill of Materials:
+
+Blue Pill (STM32F103C8, 64KiB flash):
+https://www.hestore.hu/prod_10043289.html
+
+Blue Pill (STM32F103C6, 32KiB flash):
+https://pepita.hu/muszaki-cikk-elektronika-outlet-c6343/stm32f103c6t6-mikrokontroller-fejleszto-modul-p10464316
+
+ST-Link V2:
+https://www.hestore.hu/prod_10037590.html
+
+Mechanical switches:
+https://www.alza.hu/keychron-kailh-switch-set-35pcsset-brown-d6587566.htm
+https://www.alza.hu/keychron-kailh-switch-set-35pcsset-red-d6587574.htm
+
