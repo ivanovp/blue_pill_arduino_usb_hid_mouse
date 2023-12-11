@@ -87,7 +87,7 @@ void loop()
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
         delay(100);
-        Keyboard.press(KEY_F4);
+        Keyboard.press(KEY_F5);
         delay(100);
         Keyboard.releaseAll();
         /* Wait until releasing key */
@@ -100,7 +100,7 @@ void loop()
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
         delay(100);
-        Keyboard.press(KEY_F5);
+        Keyboard.press(KEY_F6);
         delay(100);
         Keyboard.releaseAll();
         /* Wait until releasing key */
@@ -113,7 +113,7 @@ void loop()
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
         delay(100);
-        Keyboard.press(KEY_F6);
+        Keyboard.press(KEY_F7);
         delay(100);
         Keyboard.releaseAll();
         /* Wait until releasing key */
@@ -126,7 +126,7 @@ void loop()
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
         delay(100);
-        Keyboard.press(KEY_F7);
+        Keyboard.press(KEY_F8);
         delay(100);
         Keyboard.releaseAll();
         /* Wait until releasing key */
