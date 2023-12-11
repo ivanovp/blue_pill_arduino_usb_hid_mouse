@@ -11,6 +11,8 @@
 #include <Arduino.h>
 #include <Keyboard.h>
 
+#define ENABLE_SERIAL   0
+
 #define LED_PIN     PC13
 
 #define KEY0_PIN    PA3
@@ -19,12 +21,12 @@
 #define KEY3_PIN    PA0
 #define KEY4_PIN    PC15
 #define KEY5_PIN    PC14
-#define KEY6_PIN    PC13
+#define KEY6_PIN    PC13    /* Also used by LED! Choose another GPIO! */
 
 void setup()
 {
-    pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LOW);
+    // pinMode(LED_PIN, OUTPUT);
+    // digitalWrite(LED_PIN, LOW);
     pinMode(KEY0_PIN, INPUT_PULLUP);
     pinMode(KEY1_PIN, INPUT_PULLUP);
     pinMode(KEY2_PIN, INPUT_PULLUP);
@@ -32,10 +34,12 @@ void setup()
     pinMode(KEY4_PIN, INPUT_PULLUP);
     pinMode(KEY5_PIN, INPUT_PULLUP);
     pinMode(KEY6_PIN, INPUT_PULLUP);
+#if ENABLE_SERIAL
     Serial.begin(115200);
     Serial.printf("\n\n\n");
     Serial.printf("Blue Pill USB HID Keyboard started\n");
     Serial.printf("Compiled on " __DATE__ " " __TIME__ "\n");
+#endif
     Keyboard.begin();
 }
 
@@ -43,7 +47,9 @@ void loop()
 {
     if (digitalRead(KEY0_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key0 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
@@ -56,7 +62,9 @@ void loop()
     }
     if (digitalRead(KEY1_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key1 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
@@ -69,7 +77,9 @@ void loop()
     }
     if (digitalRead(KEY2_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key2 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
@@ -82,7 +92,9 @@ void loop()
     }
     if (digitalRead(KEY3_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key3 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
@@ -95,7 +107,9 @@ void loop()
     }
     if (digitalRead(KEY4_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key4 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
@@ -108,7 +122,9 @@ void loop()
     }
     if (digitalRead(KEY5_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key5 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
@@ -121,7 +137,9 @@ void loop()
     }
     if (digitalRead(KEY6_PIN) == LOW)
     {
+#if ENABLE_SERIAL
         Serial.printf("Key6 pressed\n");
+#endif
         Keyboard.press(KEY_LEFT_ALT);
         delay(100);
         Keyboard.press(KEY_LEFT_GUI);
