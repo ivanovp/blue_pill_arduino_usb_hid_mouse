@@ -11,8 +11,10 @@ keybody_width = 14;
 keybody_length = 14;
 keybody_height = 8;
 thickness = 1.3;
-/* Number of keys */
-key_num = 7;
+/* Number of keys in a row */
+key_num_per_row = 7;
+/* Number of rows */
+key_rows = 2;
 key_space_x = 6;
 key_space_x_left = 3;
 key_space_x_right = 3;
@@ -22,16 +24,17 @@ cylinder_inner_diameter = 2.9;
 /* 4 drill's diameter to fasten bottom part to the top */
 drill_diameter = 3.4;
 /* Cutout for USB cable */
-cutout_width = 10;
+cutout_width = 11;
 cutout_height = 8;
 
 /* Internal variables */
 delta = 0.1;
 w = keybody_width + key_space_x;
-fw = w * key_num + key_space_x + key_space_x_left + key_space_x_right;
+fw = w * key_num_per_row + key_space_x + key_space_x_left + key_space_x_right;
+d = keybody_length * key_rows + key_space_y * (key_rows + 1);
+echo("Internal depth: ", d - thickness * 2);
 epsilon = 0.1;
 $fn = 64;
-echo("Internal width: ", keybody_length + key_space_y * 2 - thickness * 2);
 
 module cyl()
 {
@@ -51,16 +54,19 @@ if (enable_top)
 {
     translate([cylinder_outer_diameter / 2, cylinder_outer_diameter / 2, thickness]) cyl();
     translate([fw - cylinder_outer_diameter / 2, cylinder_outer_diameter / 2, thickness]) cyl();
-    translate([cylinder_outer_diameter / 2, keybody_length + key_space_y * 2 - cylinder_outer_diameter / 2, thickness]) cyl();
-    translate([fw - cylinder_outer_diameter / 2, keybody_length + key_space_y * 2 - cylinder_outer_diameter / 2, thickness]) cyl();
+    translate([cylinder_outer_diameter / 2, d - cylinder_outer_diameter / 2, thickness]) cyl();
+    translate([fw - cylinder_outer_diameter / 2, d - cylinder_outer_diameter / 2, thickness]) cyl();
 
     color("lightblue") difference()
     {
-        cube([fw, keybody_length + key_space_y * 2, case_height]);
-        translate([thickness, thickness, -epsilon]) cube([fw - thickness * 2, keybody_length + key_space_y * 2 - thickness * 2, case_height - thickness + epsilon]);
-        for (i = [0 : key_num - 1])
+        cube([fw, d, case_height]);
+        translate([thickness, thickness, -epsilon]) cube([fw - thickness * 2, d - thickness * 2, case_height - thickness + epsilon]);
+        for (j = [0 : key_rows - 1])
         {
-            translate([key_space_x_left + i * w + key_space_x, key_space_y, case_height - keybody_height / 2]) cube([keybody_width, keybody_length, keybody_height]);
+            for (i = [0 : key_num_per_row - 1])
+            {
+                translate([key_space_x_left + i * w + key_space_x, key_space_y + j * (keybody_length + key_space_y), case_height - keybody_height / 2]) cube([keybody_width, keybody_length, keybody_height]);
+            }
         }
         translate([-epsilon, keybody_length / 2 + key_space_y - cutout_width / 2, thickness]) cube([thickness + epsilon * 2, cutout_width, cutout_height]);
     }
@@ -72,12 +78,12 @@ if (enable_bottom)
     {
         union()
         {
-            cube([fw, keybody_length + key_space_y * 2, thickness]);
-            translate([thickness + delta, thickness + delta, thickness]) cube([fw - thickness * 2 - delta * 2, keybody_length + key_space_y * 2 - thickness * 2 - delta * 2, thickness - delta * 2]);    
+            cube([fw, d, thickness]);
+            translate([thickness + delta, thickness + delta, thickness]) cube([fw - thickness * 2 - delta * 2, d - thickness * 2 - delta * 2, thickness - delta * 2]);    
         }
         translate([cylinder_outer_diameter / 2, cylinder_outer_diameter / 2, 0]) cyl2();
         translate([fw - cylinder_outer_diameter / 2, cylinder_outer_diameter / 2, 0]) cyl2();
-        translate([cylinder_outer_diameter / 2, keybody_length + key_space_y * 2 - cylinder_outer_diameter / 2, 0]) cyl2();
-        translate([fw - cylinder_outer_diameter / 2, keybody_length + key_space_y * 2 - cylinder_outer_diameter / 2, 0]) cyl2();       
+        translate([cylinder_outer_diameter / 2, d - cylinder_outer_diameter / 2, 0]) cyl2();
+        translate([fw - cylinder_outer_diameter / 2, d - cylinder_outer_diameter / 2, 0]) cyl2();       
     }
 }
