@@ -10,8 +10,11 @@
 
 #include <Arduino.h>
 #include <Mouse.h>
+#include <U8g2lib.h>
+#include <Wire.h>
 
 #define ENABLE_SERIAL   0
+#define ENABLE_LCD      0
 
 #define LED_PIN     PC13
 
@@ -37,6 +40,9 @@
 uint32_t mouse_press_end_ms = 0;
 // uint32_t mouse_press_time_ms = 10 * 1000;
 uint32_t mouse_press_time_ms = 60 * 1000;
+#if ENABLE_LCD
+U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g(U8G2_R0);
+#endif
 
 void setLed(bool on=true)
 {
@@ -96,22 +102,66 @@ void setup()
 #endif
 #if ENABLE_SERIAL
     Serial.begin(115200);
-    Serial.printf("\n\n\n");
-    Serial.printf("Blue Pill USB HID Keyboard started\n");
-    Serial.printf("Compiled on " __DATE__ " " __TIME__ "\n");
+    Serial.print("\n\n\n");
+    Serial.print("Blue Pill USB HID Keyboard started\n");
+    Serial.print("Compiled on " __DATE__ " " __TIME__ "\n");
 #endif
     Mouse.begin();
+#if ENABLE_LCD
+    Wire.begin();
+    int r = u8g.begin();
+#if ENABLE_SERIAL
+    Serial.print("Display init: ");
+    Serial.println(r);
+#endif
+    u8g.setFont(u8g_font_unifont);
+#endif
+}
+
+void update_display()
+{
+#if ENABLE_LCD
+    static uint32_t last_update_ms = 0;
+
+    if (last_update_ms == 0 || last_update_ms + 500 <= millis())
+    {
+        last_update_ms = millis();
+        u8g.setCursor(0, 0);
+        if (Mouse.isPressed(MOUSE_LEFT))
+        {
+            u8g.print("B1");
+        }
+        else
+        {
+            u8g.print("  ");
+        }
+
+        u8g.setCursor(0, 22);
+        if (mouse_press_end_ms)
+        {
+            u8g.print("RT: ");
+            u8g.print((mouse_press_end_ms - millis()) / 1000);
+            u8g.print(" s ");
+        }
+        else
+        {
+            u8g.print("RT: -      ");
+        }
+        u8g.sendBuffer();
+    }
+#endif
 }
 
 void loop()
 {
+    update_display();
     if (mouse_press_end_ms)
     {
         uint32_t m = millis();
         if (m > mouse_press_end_ms)
         {
 #if ENABLE_SERIAL
-            Serial.printf("Press end due to timout\n");
+            Serial.print("Press end due to timout\n");
 #endif
             Mouse.release(MOUSE_LEFT);
             mouse_press_end_ms = 0;
@@ -134,20 +184,20 @@ void loop()
     if (digitalRead(KEY0_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key0 pressed\n");
+        Serial.print("Key0 pressed\n");
 #endif
         setLed(true);
         if (mouse_press_end_ms)
         {
 #if ENABLE_SERIAL
-            Serial.printf("Increasing time\n");
+            Serial.print("Increasing time\n");
 #endif
             mouse_press_end_ms += mouse_press_time_ms;
         }
         else
         {
 #if ENABLE_SERIAL
-            Serial.printf("Press start\n");
+            Serial.print("Press start\n");
 #endif
             Mouse.press(MOUSE_LEFT);
             mouse_press_end_ms = millis() + mouse_press_time_ms;
@@ -161,12 +211,12 @@ void loop()
     if (digitalRead(KEY1_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key1 pressed\n");
+        Serial.print("Key1 pressed\n");
 #endif
         if (mouse_press_end_ms)
         {
 #if ENABLE_SERIAL
-            Serial.printf("Press end\n");
+            Serial.print("Press end\n");
 #endif
             Mouse.release(MOUSE_LEFT);
             mouse_press_end_ms = 0;
@@ -180,7 +230,7 @@ void loop()
     if (digitalRead(KEY2_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key2 pressed\n");
+        Serial.print("Key2 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -191,7 +241,7 @@ void loop()
     if (digitalRead(KEY3_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key3 pressed\n");
+        Serial.print("Key3 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -202,7 +252,7 @@ void loop()
     if (digitalRead(KEY4_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key4 pressed\n");
+        Serial.print("Key4 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -213,7 +263,7 @@ void loop()
     if (digitalRead(KEY5_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key5 pressed\n");
+        Serial.print("Key5 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -224,7 +274,7 @@ void loop()
     if (digitalRead(KEY6_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key6 pressed\n");
+        Serial.print("Key6 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -235,7 +285,7 @@ void loop()
     if (digitalRead(KEY7_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key7 pressed\n");
+        Serial.print("Key7 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -246,7 +296,7 @@ void loop()
     if (digitalRead(KEY8_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key8 pressed\n");
+        Serial.print("Key8 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -257,7 +307,7 @@ void loop()
     if (digitalRead(KEY9_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key9 pressed\n");
+        Serial.print("Key9 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -268,7 +318,7 @@ void loop()
     if (digitalRead(KEY10_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key10 pressed\n");
+        Serial.print("Key10 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -279,7 +329,7 @@ void loop()
     if (digitalRead(KEY11_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key11 pressed\n");
+        Serial.print("Key11 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -290,7 +340,7 @@ void loop()
     if (digitalRead(KEY12_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key12 pressed\n");
+        Serial.print("Key12 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
         /* Wait until releasing key */
@@ -301,7 +351,7 @@ void loop()
     if (digitalRead(KEY13_PIN) == LOW)
     {
 #if ENABLE_SERIAL
-        Serial.printf("Key13 pressed\n");
+        Serial.print("Key13 pressed\n");
 #endif
         delay(SOFTWARE_DEBOUNCE_TIME_MS);
 
